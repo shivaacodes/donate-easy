@@ -1,100 +1,104 @@
 "use client";
 
-import Image from "next/image";
 import { ConnectButton } from "thirdweb/react";
-import thirdwebIcon from "@public/thirdweb.svg";
 import { client } from "./client";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
+import Link from "next/link"
 
 export default function Home() {
   return (
-    <main className="p-4 pb-10 min-h-[100vh] flex items-center justify-center container max-w-screen-lg mx-auto">
-      <div className="py-20">
-        <Header />
+    <main className="min-h-screen bg-gradient-to-br from-purple-900 via-black to-purple-950 relative overflow-hidden">
+      {/* Animated gradient background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4c1d95,#000000,#4c1d95)] opacity-50 animate-gradient-x"></div>
 
-        <div className="flex justify-center mb-20">
-          <ConnectButton
-            client={client}
-            appMetadata={{
-              name: "Example App",
-              url: "https://example.com",
-            }}
-          />
+      {/* Navigation/Header */}
+      <nav className="relative z-10 p-6 border-b border-purple-800/20">
+        <div className="container mx-auto flex items-center justify-between">
+          {/* Logo */}
+          <div className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-purple-100 text-transparent bg-clip-text">
+            DonateEasy
+          </div>
+
+          {/* Navigation Menu */}
+          <div className="flex items-center gap-6">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="bg-transparent text-purple-100 hover:bg-purple-900/50">
+                    Features
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <ul className="grid gap-3 p-6 w-[400px] bg-black/90 backdrop-blur-sm">
+                      <li className="row-span-3">
+                        <NavigationMenuLink asChild>
+                          <Link
+                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-purple-900/50 to-purple-900 p-6 no-underline outline-none focus:shadow-md"
+                            href="/"
+                          >
+                            <div className="mb-2 mt-4 text-lg font-medium text-purple-100">
+                              Why DonateEasy?
+                            </div>
+                            <p className="text-sm leading-tight text-purple-200">
+                              Secure and transparent charitable giving powered by blockchain technology.
+                            </p>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link href="/about" legacyBehavior passHref>
+                    <NavigationMenuLink className={`${navigationMenuTriggerStyle()} bg-transparent text-purple-100 hover:bg-purple-900/50`}>
+                      About
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <Link href="/contact" legacyBehavior passHref>
+                    <NavigationMenuLink className={`${navigationMenuTriggerStyle()} bg-transparent text-purple-100 hover:bg-purple-900/50`}>
+                      Contact
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            <ConnectButton
+              client={client}
+              appMetadata={{
+                name: "DonateEasy",
+                url: "https://example.com",
+              }}
+            />
+          </div>
         </div>
+      </nav>
 
-        <ThirdwebResources />
+      {/* Hero Section */}
+      <div className="relative z-10 container mx-auto px-6 pt-32">
+        <div className="text-center">
+          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-purple-100 text-transparent bg-clip-text">
+            DonateEasy
+          </h1>
+          <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
+            The future of charitable giving on the blockchain. Secure, transparent, and efficient.
+          </p>
+          <button className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105">
+            Start Donating
+          </button>
+        </div>
       </div>
     </main>
-  );
-}
-
-function Header() {
-  return (
-    <header className="flex flex-col items-center mb-20 md:mb-20">
-      <Image
-        src={thirdwebIcon}
-        alt=""
-        className="size-[150px] md:size-[150px]"
-        style={{
-          filter: "drop-shadow(0px 0px 24px #a726a9a8)",
-        }}
-      />
-
-      <h1 className="text-2xl md:text-6xl font-semibold md:font-bold tracking-tighter mb-6 text-zinc-100">
-        thirdweb SDK
-        <span className="text-zinc-300 inline-block mx-1"> + </span>
-        <span className="inline-block -skew-x-6 text-blue-500"> Next.js </span>
-      </h1>
-
-      <p className="text-zinc-300 text-base">
-        Read the{" "}
-        <code className="bg-zinc-800 text-zinc-300 px-2 rounded py-1 text-sm mx-1">
-          README.md
-        </code>{" "}
-        file to get started.
-      </p>
-    </header>
-  );
-}
-
-function ThirdwebResources() {
-  return (
-    <div className="grid gap-4 lg:grid-cols-3 justify-center">
-      <ArticleCard
-        title="thirdweb SDK Docs"
-        href="https://portal.thirdweb.com/typescript/v5"
-        description="thirdweb TypeScript SDK documentation"
-      />
-
-      <ArticleCard
-        title="Components and Hooks"
-        href="https://portal.thirdweb.com/typescript/v5/react"
-        description="Learn about the thirdweb React components and hooks in thirdweb SDK"
-      />
-
-      <ArticleCard
-        title="thirdweb Dashboard"
-        href="https://thirdweb.com/dashboard"
-        description="Deploy, configure, and manage your smart contracts from the dashboard."
-      />
-    </div>
-  );
-}
-
-function ArticleCard(props: {
-  title: string;
-  href: string;
-  description: string;
-}) {
-  return (
-    <a
-      href={props.href + "?utm_source=next-template"}
-      target="_blank"
-      className="flex flex-col border border-zinc-800 p-4 rounded-lg hover:bg-zinc-900 transition-colors hover:border-zinc-700"
-    >
-      <article>
-        <h2 className="text-lg font-semibold mb-2">{props.title}</h2>
-        <p className="text-sm text-zinc-400">{props.description}</p>
-      </article>
-    </a>
   );
 }
